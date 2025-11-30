@@ -48,6 +48,7 @@ docker push eardori/comfyui-flux-uncensored:v1
 
 ## 📊 Version History
 
+- **v1.0.38**: Docker Hub repository setup complete
 - **v1.0.37**: Initial release with Flux-Uncensored-V2 LoRA integration
 
 ## 🏗️ Build Info
