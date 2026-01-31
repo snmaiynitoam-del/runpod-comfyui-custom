@@ -50,7 +50,15 @@ RUN ls -lh /comfyui/models/pulid/pulid_flux_v0.9.0.safetensors || \
 
 # ========== END PULID ==========
 
+# ========== TOOLING NODES ==========
+
+# ComfyUI Tooling Nodes for base64 image loading (ETN_LoadImageBase64)
+RUN cd /comfyui/custom_nodes && \
+    git clone https://github.com/Acly/comfyui-tooling-nodes
+
+# ========== END TOOLING NODES ==========
+
 # Label metadata
 LABEL maintainer="snmaiynitoam"
 LABEL description="RunPod ComfyUI Worker with Flux-Uncensored-V2 LoRA + PuLID for face consistency"
-LABEL version="2.0.0"
+LABEL version="2.1.0"
