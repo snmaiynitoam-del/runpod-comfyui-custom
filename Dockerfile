@@ -50,15 +50,15 @@ RUN mkdir -p /root/.insightface/models && \
 
 # ========== WAN 2.1 VIDEO GENERATION ==========
 
-# Wan custom nodes
+# Wan custom nodes (removed || true to catch errors)
 RUN cd /comfyui/custom_nodes && \
     git clone https://github.com/kijai/ComfyUI-WanVideoWrapper && \
-    cd ComfyUI-WanVideoWrapper && pip install -r requirements.txt || true
+    cd ComfyUI-WanVideoWrapper && pip install -r requirements.txt
 
-# VideoHelperSuite for video output
+# VideoHelperSuite for video output (removed || true to catch errors)
 RUN cd /comfyui/custom_nodes && \
     git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite && \
-    cd ComfyUI-VideoHelperSuite && pip install -r requirements.txt || true
+    cd ComfyUI-VideoHelperSuite && pip install -r requirements.txt
 
 # Create directories
 RUN mkdir -p /comfyui/models/diffusion_models \
@@ -69,9 +69,9 @@ RUN mkdir -p /comfyui/models/diffusion_models \
 RUN wget -O /comfyui/models/diffusion_models/wan2.1_i2v_480p_14B_fp8_scaled.safetensors \
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_i2v_480p_14B_fp8_scaled.safetensors"
 
-# Download Text Encoder (FP8 scaled ~6.74GB)
-RUN wget -O /comfyui/models/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors \
-    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+# Download Text Encoder FP16 (~11.4GB) - WanVideoWrapper doesn't support fp8_scaled
+RUN wget -O /comfyui/models/text_encoders/umt5_xxl_fp16.safetensors \
+    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp16.safetensors"
 
 # Download VAE (~254MB)
 RUN wget -O /comfyui/models/vae/wan_2.1_vae.safetensors \
@@ -81,12 +81,16 @@ RUN wget -O /comfyui/models/vae/wan_2.1_vae.safetensors \
 RUN wget -O /comfyui/models/clip_vision/clip_vision_h.safetensors \
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors"
 
-# Verify installations
+# ========== VERIFICATION ==========
 RUN ls -lh /comfyui/models/diffusion_models/wan2.1_i2v_480p_14B_fp8_scaled.safetensors || \
     (echo "Wan model not found!" && exit 1)
+RUN ls -lh /comfyui/models/text_encoders/umt5_xxl_fp16.safetensors || \
+    (echo "Text encoder not found!" && exit 1)
 RUN ls -lh /comfyui/models/pulid/pulid_flux_v0.9.1.safetensors || \
     (echo "PuLID model not found!" && exit 1)
+RUN ls -lh /comfyui/models/eva_clip/EVA02_CLIP_L_336_psz14_s6B.pt || \
+    (echo "EVA-CLIP model not found!" && exit 1)
 
 LABEL maintainer="snmaiynitoam"
 LABEL description="RunPod ComfyUI: Flux + PuLID + Wan 2.1 Video"
-LABEL version="3.1.0"
+LABEL version="4.0.0"
