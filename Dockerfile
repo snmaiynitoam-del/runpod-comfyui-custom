@@ -10,6 +10,10 @@ RUN comfy model download \
 RUN ls -lh /comfyui/models/loras/Flux-Uncensored-V2.safetensors || \
     (echo "LoRA file not found!" && exit 1)
 
+# ========== TOOLING NODES (Base64 image loading) ==========
+RUN cd /comfyui/custom_nodes && \
+    git clone https://github.com/Acly/comfyui-tooling-nodes
+
 # ========== PULID FACE CONSISTENCY ==========
 RUN pip install --no-cache-dir insightface onnxruntime-gpu
 
@@ -19,9 +23,11 @@ RUN cd /comfyui/custom_nodes && \
 
 RUN mkdir -p /comfyui/models/pulid /comfyui/models/insightface/models/antelopev2
 
-RUN wget -O /comfyui/models/pulid/pulid_flux_v0.9.0.safetensors \
-    "https://huggingface.co/guozinan/PuLID/resolve/main/pulid_flux_v0.9.0.safetensors"
+# Download PuLID model v0.9.1 (~1.14GB)
+RUN wget -O /comfyui/models/pulid/pulid_flux_v0.9.1.safetensors \
+    "https://huggingface.co/guozinan/PuLID/resolve/main/pulid_flux_v0.9.1.safetensors"
 
+# Download InsightFace AntelopeV2 models
 RUN wget -P /comfyui/models/insightface/models/antelopev2/ \
     "https://huggingface.co/DIAMONIK7777/antelopev2/resolve/main/1k3d68.onnx" && \
     wget -P /comfyui/models/insightface/models/antelopev2/ \
@@ -33,9 +39,14 @@ RUN wget -P /comfyui/models/insightface/models/antelopev2/ \
     wget -P /comfyui/models/insightface/models/antelopev2/ \
     "https://huggingface.co/DIAMONIK7777/antelopev2/resolve/main/scrfd_10g_bnkps.onnx"
 
-# ========== TOOLING NODES (Base64 image loading) ==========
-RUN cd /comfyui/custom_nodes && \
-    git clone https://github.com/Acly/comfyui-tooling-nodes
+# Download EVA-CLIP model for PuLID (~856MB)
+RUN mkdir -p /comfyui/models/eva_clip && \
+    wget -O /comfyui/models/eva_clip/EVA02_CLIP_L_336_psz14_s6B.pt \
+    "https://huggingface.co/QuanSun/EVA-CLIP/resolve/main/EVA02_CLIP_L_336_psz14_s6B.pt"
+
+# Create symlink for InsightFace (it looks in ~/.insightface by default)
+RUN mkdir -p /root/.insightface/models && \
+    ln -sf /comfyui/models/insightface/models/antelopev2 /root/.insightface/models/antelopev2
 
 # ========== WAN 2.1 VIDEO GENERATION ==========
 
@@ -70,12 +81,12 @@ RUN wget -O /comfyui/models/vae/wan_2.1_vae.safetensors \
 RUN wget -O /comfyui/models/clip_vision/clip_vision_h.safetensors \
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors"
 
-# Verify Wan installation
+# Verify installations
 RUN ls -lh /comfyui/models/diffusion_models/wan2.1_i2v_480p_14B_fp8_scaled.safetensors || \
     (echo "Wan model not found!" && exit 1)
-
-# ========== END WAN ==========
+RUN ls -lh /comfyui/models/pulid/pulid_flux_v0.9.1.safetensors || \
+    (echo "PuLID model not found!" && exit 1)
 
 LABEL maintainer="snmaiynitoam"
 LABEL description="RunPod ComfyUI: Flux + PuLID + Wan 2.1 Video"
-LABEL version="3.0.0"
+LABEL version="3.1.0"
