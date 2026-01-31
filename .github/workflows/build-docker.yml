@@ -48,8 +48,8 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            eardori/comfyui-flux-uncensored:v1
-            eardori/comfyui-flux-uncensored:latest
+            snmaiynitoam/comfyui-flux-nsfw:v1
+            snmaiynitoam/comfyui-flux-nsfw:latest
           no-cache: true
 
       - name: Image digest
