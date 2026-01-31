@@ -15,7 +15,8 @@ RUN cd /comfyui/custom_nodes && \
     git clone https://github.com/Acly/comfyui-tooling-nodes
 
 # ========== PULID FACE CONSISTENCY ==========
-RUN pip install --no-cache-dir insightface onnxruntime-gpu
+# Use insightface 0.7.3 specifically - newer versions break the providers argument
+RUN pip install --no-cache-dir insightface==0.7.3 onnxruntime-gpu
 
 RUN cd /comfyui/custom_nodes && \
     git clone https://github.com/balazik/ComfyUI-PuLID-Flux && \
@@ -50,12 +51,12 @@ RUN mkdir -p /root/.insightface/models && \
 
 # ========== WAN 2.1 VIDEO GENERATION ==========
 
-# Wan custom nodes (removed || true to catch errors)
+# Wan custom nodes
 RUN cd /comfyui/custom_nodes && \
     git clone https://github.com/kijai/ComfyUI-WanVideoWrapper && \
     cd ComfyUI-WanVideoWrapper && pip install -r requirements.txt
 
-# VideoHelperSuite for video output (removed || true to catch errors)
+# VideoHelperSuite for video output
 RUN cd /comfyui/custom_nodes && \
     git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite && \
     cd ComfyUI-VideoHelperSuite && pip install -r requirements.txt
@@ -93,4 +94,4 @@ RUN ls -lh /comfyui/models/eva_clip/EVA02_CLIP_L_336_psz14_s6B.pt || \
 
 LABEL maintainer="snmaiynitoam"
 LABEL description="RunPod ComfyUI: Flux + PuLID + Wan 2.1 Video"
-LABEL version="4.0.0"
+LABEL version="4.1.0"
