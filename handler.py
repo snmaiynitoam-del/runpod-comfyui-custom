@@ -77,8 +77,8 @@ def build_workflow(
         "2": {
             "class_type": "WanVideoModelLoader",
             "inputs": {
-                "model": "wan2.2_i2v_480p_bf16.safetensors",
-                "precision": "bf16",
+                "model": "wan2.2_i2v_14B_fp8.safetensors",
+                "precision": "fp8_scaled",
                 "quantization": "disabled",
                 "attention": "sdpa"
             }

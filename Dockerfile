@@ -18,9 +18,9 @@ RUN mkdir -p /comfyui/models/diffusion_models \
     /comfyui/models/loras/wan
 
 # ========== WAN 2.2 MODELS ==========
-# Wan 2.2 I2V Model (BF16 ~26GB)
-RUN wget -O /comfyui/models/diffusion_models/wan2.2_i2v_480p_bf16.safetensors \
-    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_480p_bf16.safetensors"
+# Wan 2.2 I2V Model FP8 (~14.3GB) - using high_noise variant for better quality
+RUN wget -O /comfyui/models/diffusion_models/wan2.2_i2v_14B_fp8.safetensors \
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors"
 
 # Text Encoder FP16 (~11.4GB)
 RUN wget -O /comfyui/models/text_encoders/umt5_xxl_fp16.safetensors \
