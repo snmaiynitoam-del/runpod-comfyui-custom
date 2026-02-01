@@ -79,10 +79,12 @@ RUN wget -O /comfyui/models/clip_vision/clip_vision_h.safetensors \
     "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors"
 
 # ========== WAN 2.2 VIDEO LORAS ==========
-# Download from CivitAI (blowjob/handjob LoRA)
+# Download from HuggingFace (uploaded from CivitAI originals)
 RUN wget -O /comfyui/models/loras/wan/WAN-2.2-I2V-HandjobBlowjobCombo-HIGH-v1.safetensors \
-    "https://civitai.com/api/download/models/2826699?type=Model&format=SafeTensor" || \
-    echo "CivitAI download may require token - LoRA file placeholder created"
+    "https://huggingface.co/snailmana99/wan22-video-loras/resolve/main/WAN-2.2-I2V-HandjobBlowjobCombo-HIGH-v1.safetensors"
+
+RUN wget -O /comfyui/models/loras/wan/jfj-deepthroat-W22-T2V-HN-v1.safetensors \
+    "https://huggingface.co/snailmana99/wan22-video-loras/resolve/main/jfj-deepthroat-W22-T2V-HN-v1.safetensors"
 
 # ========== CUSTOM HANDLER ==========
 COPY handler.py /handler.py
