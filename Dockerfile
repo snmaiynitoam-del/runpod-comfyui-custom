@@ -42,9 +42,10 @@ RUN wget -O /comfyui/models/loras/wan/jfj-deepthroat-W22-T2V-HN-v1.safetensors \
     "https://huggingface.co/snailmana99/wan22-video-loras/resolve/main/jfj-deepthroat-W22-T2V-HN-v1.safetensors"
 
 # ========== CUSTOM HANDLER ==========
+RUN pip install runpod requests
 COPY handler.py /handler.py
 COPY start.sh /start.sh
-RUN chmod +x /start.sh
+RUN chmod +x /start.sh && sed -i 's/\r$//' /start.sh
 
 # ========== VERIFICATION ==========
 RUN ls -lh /comfyui/models/diffusion_models/ && \
