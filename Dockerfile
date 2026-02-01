@@ -43,13 +43,15 @@ RUN wget -O /comfyui/models/loras/wan/jfj-deepthroat-W22-T2V-HN-v1.safetensors \
 
 # ========== CUSTOM HANDLER ==========
 COPY handler.py /handler.py
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 # ========== VERIFICATION ==========
 RUN ls -lh /comfyui/models/diffusion_models/ && \
     ls -lh /comfyui/models/text_encoders/ && \
     ls -lh /comfyui/models/loras/wan/
 
-CMD ["python", "/handler.py"]
+CMD ["/start.sh"]
 
 LABEL maintainer="snmaiynitoam"
 LABEL description="RunPod ComfyUI: Wan 2.2 Video with LoRAs (Lightweight)"

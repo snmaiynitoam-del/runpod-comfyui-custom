@@ -9,11 +9,6 @@ import requests
 import time
 from pathlib import Path
 
-# Import ComfyUI execution
-import sys
-sys.path.insert(0, '/comfyui')
-from main import main as comfy_main
-
 COMFYUI_URL = "http://127.0.0.1:8188"
 
 # Available LoRAs (pre-installed in Docker image)
