@@ -1,5 +1,5 @@
 # RunPod ComfyUI Worker - Wan 2.2 Video Only (Lightweight)
-FROM --platform=linux/amd64 runpod/worker-comfyui:3.2.0-base
+FROM runpod/worker-comfyui:5.7.1-base
 
 # ========== WAN 2.2 VIDEO NODES ==========
 RUN cd /comfyui/custom_nodes && \
