@@ -1,70 +1,79 @@
-# RunPod ComfyUI Worker with Flux-Uncensored-V2 LoRA
+# RunPod ComfyUI Worker - Flux + PuLID + Wan 2.2 Video
 
-Custom Docker image for RunPod Serverless with NSFW-enhanced LoRA pre-installed.
+Custom Docker image for RunPod Serverless with NSFW-enhanced models pre-installed.
 
-## 🎯 Purpose
+## Features
 
-This image extends RunPod's official ComfyUI worker with:
-- **Base**: `runpod/worker-comfyui:5.5.1-flux1-dev-fp8`
-- **LoRA**: Flux-Uncensored-V2 (150MB) for NSFW quality enhancement
-- **Platform**: linux/amd64 (RunPod GPU servers)
+- **Flux** image generation with Uncensored-V2 LoRA
+- **PuLID-Flux** face consistency
+- **Wan 2.2 I2V** video generation with custom LoRAs
+- Custom handler with LoRA selection support
 
-## 🚀 Usage
+## Usage
 
-### Option 1: Use Pre-built Image (Recommended)
+### Container Image
 
-```bash
-# In RunPod Endpoint settings
-Container Image: eardori/comfyui-flux-uncensored:v1
+```
+snmaiynitoam/comfyui-flux-nsfw:v2-wan22
 ```
 
-### Option 2: Build Locally
+### Video Generation API
 
-```bash
-docker build --platform linux/amd64 -t eardori/comfyui-flux-uncensored:v1 .
-docker push eardori/comfyui-flux-uncensored:v1
+```json
+{
+  "input": {
+    "image_url": "https://example.com/input.png",
+    "prompt": "blowjob, deepthroat, woman giving oral, smooth motion",
+    "negative_prompt": "blurry, distorted, low quality",
+    "width": 448,
+    "height": 640,
+    "length": 81,
+    "steps": 30,
+    "cfg": 5.0,
+    "seed": -1,
+    "lora": "blowjob",
+    "lora_strength": 1.0
+  }
+}
 ```
 
-### Option 3: Build via GitHub Actions
+### Available LoRAs
 
-1. Fork this repository
-2. Add Docker Hub secrets:
-   - `DOCKER_USERNAME`: Your Docker Hub username
-   - `DOCKER_PASSWORD`: Your Docker Hub password or access token
-3. Push to `main` branch or manually trigger workflow
+| Name | File | Description |
+|------|------|-------------|
+| `blowjob` | `WAN-2.2-I2V-HandjobBlowjobCombo-HIGH-v1.safetensors` | Blowjob/handjob actions |
+| `deepthroat` | `jfj-deepthroat-W22-T2V-HN-v1.safetensors` | Deepthroat action |
 
-## 📦 What's Included
+## Pre-installed Models
 
-- FLUX.1-dev FP8 model (`flux1-dev-fp8.safetensors`)
-- Flux-Uncensored-V2 LoRA (`Flux-Uncensored-V2.safetensors`)
-- ComfyUI workflow ready for NSFW image generation
+### Image Generation
+- FLUX.1-dev FP8
+- Flux-Uncensored-V2 LoRA
+- PuLID v0.9.1 + InsightFace AntelopeV2
 
-## 🔧 LoRA Configuration
+### Video Generation
+- Wan 2.2 I2V 480p BF16
+- UMT5-XXL text encoder
+- CLIP Vision H
+- Wan 2.1 VAE
 
-- **Model**: Flux-Uncensored-V2
-- **Source**: https://huggingface.co/enhanceaiteam/Flux-Uncensored-V2
-- **Strength**: 0.85 (model + clip)
-- **Path**: `/comfyui/models/loras/Flux-Uncensored-V2.safetensors`
+## Build
 
-## 📊 Version History
+### GitHub Actions (Automatic)
+Push to `main` branch triggers automatic build.
 
-- **v1.0.38**: Docker Hub repository setup complete
-- **v1.0.37**: Initial release with Flux-Uncensored-V2 LoRA integration
+### Manual
+```bash
+docker build --platform linux/amd64 -t snmaiynitoam/comfyui-flux-nsfw:v2-wan22 .
+docker push snmaiynitoam/comfyui-flux-nsfw:v2-wan22
+```
 
-## 🏗️ Build Info
+## Version History
 
-- **Image Size**: ~22GB (base) + 150MB (LoRA)
-- **Build Time**: ~10-15 minutes (GitHub Actions)
-- **Platform**: linux/amd64
+- **v2-wan22**: Wan 2.2 video + LoRA support + custom handler
+- **v1**: Initial Flux + PuLID + Wan 2.1
 
-## 📝 License
+## License
 
-This project uses:
-- RunPod Official Worker (MIT License)
-- Flux-Uncensored-V2 LoRA (Check HuggingFace repo for license)
-
-## 🔗 Related Links
-
-- [RunPod Documentation](https://docs.runpod.io/)
-- [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
-- [Flux-Uncensored-V2](https://huggingface.co/enhanceaiteam/Flux-Uncensored-V2)
+- RunPod Official Worker (MIT)
+- Model licenses per their respective repositories
